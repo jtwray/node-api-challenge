@@ -40,13 +40,24 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+Middleware and Routers are cool
+
 - [ ] Describe Middleware?
+
+Middleware seems like custom hooks from react to me. Its related to the connect concept. Middleware in express operates on a stack. it takes in a server call and manipulates the data in some way and then sends it on down the stack as it were. YOu can use midleware as a way to abstract repeated code functionality to make it more readible or modular. three types of middleware. custom middleware , built-in midleware, and third-party middleware
 
 - [ ] Describe a Resource?
 
+Everything is a resource each resource is accessible via a unique URI resources can have multiple representations you  manage resources with HTTP methods.
+resources are the groups of data we interact with and build endpoints to reach and retrieve information about
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+status codes and response data. json data specificaly can be returned i.e. key value pairs in the form of messages errorMessages or a javascript object in the shape of whatever we updated deleted or added to the database store.
+
 - [ ] How can we partition our application into sub-applications?
+
+with express router to make routes and subroutes for different resources depenedent on how they relate to each other ie: [] many to many ] [ one to many ] etc  
 
 ## Minimum Viable Product
 
