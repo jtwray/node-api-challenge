@@ -12,8 +12,8 @@ const server=express();
 server.use(logger)
 server.use(express.json())
 
-server.use('/api/projects',projectsRouter)
-server.use('/api/actions',actionsRouter)
+server.use('/projects',projectsRouter)
+server.use('/actions',actionsRouter)
 
 server.get('/',(req,res)=>{
     res.send(`<h2>server is running on port </h2>`)

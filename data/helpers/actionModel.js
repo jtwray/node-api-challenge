@@ -47,3 +47,4 @@ function remove(id) {
         .where("id", id)
         .del();
 }
+
