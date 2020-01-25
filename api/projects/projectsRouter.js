@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
     // this is my magic
     P.get()
         .then(projects => {
-            projects.length < 0
+            projects === []
                 ?
                 res.status(200)
                     .json({ message: "There aren't any projects yet. Create one! A project needs a Name and a Description." })
@@ -49,7 +49,7 @@ router.get('/:id', (req, res) => {
         })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateProjectID, (req, res) => {
     // open ses ame!
     P.remove(req.params.id)
         .then(project => {
@@ -83,16 +83,16 @@ router.post('/', (req, res) => {
                 })
         })
 });
-router.put('/:id', validateID, (req, res) => {
+router.put('/:id', validateProjectID, validateProject, (req, res) => {
     // do your magic!
     const { id } = req.params;
     const changes = req.body;
     P.update(req.params.id, changes)
         .then(count => {
-            req.status(200)
+            res.status(200)
                 .json({
                     count,
-                    message: "User updated successfully."
+                    message: "Project updated successfully."
                 });
         })
         .catch(error => {
@@ -106,7 +106,7 @@ router.put('/:id', validateID, (req, res) => {
 
 
 
-function validateID(req, res, next) {
+function validateProjectID(req, res, next) {
     P.get(req.params.id).then(id => {
         id !== null ? next()
             :
@@ -115,5 +115,16 @@ function validateID(req, res, next) {
                     error: `There is no project with id:[${req.params.id}].`
                 })
     })
+}
+
+function validateProject(req, res, next) {
+    (!req.body.description && !req.body.name && !req.body.completed) ?
+        res
+            .status(400)
+            .json({
+                errorMessage: "Add a description name or completion update to make change to an existing Project."
+            })
+        : next()
+
 }
 module.exports = router;
