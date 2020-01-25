@@ -69,17 +69,51 @@ router.post('/', (req, res) => {
     P.insert(req.body)
         .then(project => {
             res.status(201)
-                .json({ project: [project.name.toUpperCase()], number: [project.id], description: [project.description] })
+                .json({
+                    project: [project.name.toUpperCase()],
+                    number: [project.id],
+                    description: [project.description]
+                })
         })
         .catch(error => {
             console.error(error);
             res.status(500)
-                .json({ error: "There was an error adding the project to the database." })
+                .json({
+                    error: "There was an error adding the project to the database."
+                })
         })
 });
-router.put('/:id', (req, res) => {
+router.put('/:id', validateID, (req, res) => {
     // do your magic!
-    
+    const { id } = req.params;
+    const changes = req.body;
+    P.update(req.params.id, changes)
+        .then(count => {
+            req.status(200)
+                .json({
+                    count,
+                    message: "User updated successfully."
+                });
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500)
+                .json({
+                    error: "there was an error updating the project."
+                })
+        })
 });
 
+
+
+function validateID(req, res, next) {
+    P.get(req.params.id).then(id => {
+        id !== null ? next()
+            :
+            res.status(400)
+                .json({
+                    error: `There is no project with id:[${req.params.id}].`
+                })
+    })
+}
 module.exports = router;
